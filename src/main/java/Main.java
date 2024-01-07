@@ -8,5 +8,8 @@ public class Main {
         Produit produit1 = new Produit(1L, "Produit1", 10.0, 5);
         service.ajouterProduit(produit1);
         System.out.println("Produit ajoute : " + produit1);
+
+        service.supprimerProduit(1L);
+        System.out.println("Produit supprimer");
     }
 }

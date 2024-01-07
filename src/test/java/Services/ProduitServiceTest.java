@@ -29,4 +29,22 @@ public class ProduitServiceTest {
         assertTrue(exception.getMessage().contains("existe déjà"));
     }
 
+    @Test
+    public void testSupprimerProduitExistant() {
+        Produit produit = new Produit(9L, "Produit9", 50.0, 2);
+        service.ajouterProduit(produit);
+        service.supprimerProduit(9L);
+        assertNull(service.obtenirProduit(9));
+    }
+
+    @Test
+    public void testSupprimerProduitNonExistant() {
+        try {
+            service.supprimerProduit(999L);
+            fail("Une RuntimeException aurait dû être levée");
+        } catch (RuntimeException e) {
+            assertEquals("Produit non trouvé", e.getMessage());
+        }
+    }
+
 }

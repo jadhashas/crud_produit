@@ -59,6 +59,14 @@ public class ProduitService {
         sauvegarderProduits();
     }
 
+    public void supprimerProduit(Long id) {
+        chargerProduits();
+        if (!produits.containsKey(id)) {
+            throw new RuntimeException("Produit non trouvé");
+        }
+        produits.remove(id);
+        sauvegarderProduits();
+    }
     public Produit obtenirProduit(long id) {
         return produits.get(id);
     }
