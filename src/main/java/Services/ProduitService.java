@@ -38,7 +38,7 @@ public class ProduitService {
             e.printStackTrace();
         }
     }
-    private void chargerProduits() {
+    public void chargerProduits() {
         try {
             if (Files.exists(Paths.get(FILE_PATH))) {
                 String json = new String(Files.readAllBytes(Paths.get(FILE_PATH)));
@@ -51,6 +51,7 @@ public class ProduitService {
     }
 
     public void ajouterProduit(Produit produit) {
+        chargerProduits();
         if (produitExiste(produit.getId()) || produitExisteParNom(produit.getNom())) {
             throw new RuntimeException("Un produit avec cet ID ou nom existe déjà.");
         }
@@ -66,6 +67,10 @@ public class ProduitService {
         }
         produits.remove(id);
         sauvegarderProduits();
+    }
+    public Map<Long, Produit> getProduits() {
+        chargerProduits();
+        return produits;
     }
     public Produit obtenirProduit(long id) {
         return produits.get(id);
