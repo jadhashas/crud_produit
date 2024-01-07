@@ -1,0 +1,9 @@
+language: java
+
+jdk:
+  - openjdk-21
+cache:
+  directories:
+    - $HOME/.m2
+script:
+  - mvn test
