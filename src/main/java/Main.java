@@ -1,5 +1,6 @@
 import Services.ProduitService;
 import org.gproduit.Produit;
+import java.util.Map;
 
 public class Main {
     public static void main(String[] args) {
@@ -11,5 +12,10 @@ public class Main {
 
         service.supprimerProduit(1L);
         System.out.println("Produit supprimer");
+
+        Map<Long, Produit> produits = service.getProduits();
+        for (Produit produit : produits.values()) {
+            System.out.println(produit);
+        }
     }
 }

@@ -6,7 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
-
+import java.util.Map;
 public class ProduitServiceTest {
     ProduitService service;
     @Before
@@ -47,4 +47,16 @@ public class ProduitServiceTest {
         }
     }
 
+    @Test
+    public void testGetProduits() {
+        Produit produit1 = new Produit(10L, "Produit10", 20.0, 5);
+        Produit produit2 = new Produit(20L, "Produit20", 30.0, 3);
+        service.ajouterProduit(produit1);
+        service.ajouterProduit(produit2);
+
+        Map<Long, Produit> produits = service.getProduits();
+        assertEquals(2, produits.size());
+        assertTrue(produits.containsKey(produit1.getId()));
+        assertTrue(produits.containsKey(produit2.getId()));
+    }
 }
