@@ -5,13 +5,28 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
+import java.util.Map;
+
 import static org.junit.Assert.*;
 
 public class ProduitServiceTest {
     ProduitService service;
+    private static final String FILE_PATH = "produits.json";
     @Before
     public void setUp() throws Exception {
         service = new ProduitService();
+    }
+    @After
+    public void tearDown() throws Exception {
+        try {
+            Files.deleteIfExists(Paths.get(FILE_PATH));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
     @Test
     public void testAjouterProduitValid() {
@@ -46,5 +61,32 @@ public class ProduitServiceTest {
             assertEquals("Produit non trouvé", e.getMessage());
         }
     }
-    
+
+    @Test
+    public void testGetProduitsVide() {
+        assertTrue(service.getProduits().isEmpty());
+    }
+
+    @Test
+    public void testGetProduitsAvecDonnees() {
+        service.ajouterProduit(new Produit(1L, "Produit1", 20.0, 5));
+        service.ajouterProduit(new Produit(2L, "Produit2", 30.0, 3));
+        Map<Long, Produit> produits = service.getProduits();
+
+        assertEquals(2, produits.size());
+        assertNotNull(produits.get(1L));
+        assertNotNull(produits.get(2L));
+    }
+
+    @Test
+    public void testGetProduitsApresSuppression() {
+        Produit produit = new Produit(3L, "Produit3", 40.0, 2);
+        service.ajouterProduit(produit);
+        service.supprimerProduit(3L);
+
+        assertFalse(service.getProduits().containsKey(3L));
+    }
+
+
+
 }
