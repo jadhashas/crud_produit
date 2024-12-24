@@ -19,7 +19,7 @@ pipeline {
         // Étape 3 : Tests unitaires
         stage('Tests unitaires') {
             steps {
-                bat '.mvnw.cmd test'
+                bat 'mvnw.cmd test'
             }
         }
 
