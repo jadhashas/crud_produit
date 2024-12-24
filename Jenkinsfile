@@ -29,5 +29,16 @@ pipeline {
                 bat 'mvnw.cmd package'
             }
         }
+
+        // Étape 5 : Simulation du déploiement
+        stage('Deploy') {
+            steps {
+                script {
+                    bat 'mkdir C:\\Deploy'
+                    bat 'copy target\\crud_produit.jar C:\\Deploy\\'
+                    bat 'java -jar C:\\Deploy\\crud_produit.jar'
+                }
+            }
+        }
     }
 }
