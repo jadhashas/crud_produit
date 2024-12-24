@@ -23,20 +23,27 @@ pipeline {
             }
         }
 
-        // Étape 4 : Package (générer un fichier exécutable .jar ou .war)
+        // Étape 4 : Package
         stage('Package') {
             steps {
                 bat 'mvnw.cmd package'
             }
         }
 
-        // Étape 5 : Simulation du déploiement
+        // Étape 5 : Lister les fichiers dans target
+        stage('Lister fichiers dans target') {
+            steps {
+                bat 'dir target'
+            }
+        }
+
+        // Étape 6 : Simulation du déploiement
         stage('Deploy') {
             steps {
                 script {
                     bat 'mkdir C:\\Deploy'
-                    bat 'copy target\\crud_produit.jar C:\\Deploy\\'
-                    bat 'java -jar C:\\Deploy\\crud_produit.jar'
+                    bat 'copy target\\crud_produit-1.0-SNAPSHOT.jar C:\\Deploy\\'
+                    bat 'java -jar C:\\Deploy\\crud_produit-1.0-SNAPSHOT.jar'
                 }
             }
         }
