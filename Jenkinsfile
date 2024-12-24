@@ -1,10 +1,6 @@
 pipeline {
     agent any
 
-    environment {
-        SONARQUBE_SERVER = 'SonarQube' // Nom configuré pour SonarQube dans Jenkins
-    }
-
     stages {
         // Étape 1 : Charger les variables d'environnement depuis env.properties
         stage('Charger les variables d\'environnement') {
@@ -25,33 +21,31 @@ pipeline {
             }
         }
 
-        // Étape 3 : Analyse SonarQube
-        stage('Analyse SonarQube') {
-            steps {
-                withSonarQubeEnv("${SONARQUBE_SERVER}") {
-                    bat 'mvnw.cmd sonar:sonar'
-                }
-            }
-        }
-
-        // Étape 4 : Construction du projet
+        // Étape 3 : Construction du projet
         stage('Build') {
             steps {
-                bat 'mvnw.cmd clean install'
+                bat 'mvnw.cmd clean install' // Maven Wrapper
             }
         }
 
-        // Étape 5 : Tests unitaires
+        // Étape 4 : Tests unitaires
         stage('Tests unitaires') {
             steps {
                 bat 'mvnw.cmd test'
             }
         }
 
-        // Étape 6 : Package
+        // Étape 5 : Package
         stage('Package') {
             steps {
                 bat 'mvnw.cmd package'
+            }
+        }
+
+        // Étape 6 : Lister les fichiers dans target
+        stage('Lister fichiers dans target') {
+            steps {
+                bat 'dir target'
             }
         }
 
