@@ -3,6 +3,7 @@ pipeline {
 
     environment {
         SONARQUBE_SERVER = 'SonarQube' // Nom configuré pour SonarQube dans Jenkins
+        SONARQUBE_TOKEN = 'd62e327ede4cba75cab9717a1f14e04297ddf1a2'
     }
 
     stages {
@@ -28,8 +29,8 @@ pipeline {
         // Étape 3 : Analyse SonarQube
         stage('Analyse SonarQube') {
             steps {
-                withSonarQubeEnv("${SONARQUBE_SERVER}") {
-                    bat 'mvnw.cmd sonar:sonar'
+                withSonarQubeEnv(SONARQUBE_SERVER) {
+                    bat "mvnw.cmd sonar:sonar -Dsonar.projectKey=crud_produit -Dsonar.projectName=crud_produit -Dsonar.host.url=http://localhost:9000 -Dsonar.login=${SONARQUBE_TOKEN}"
                 }
             }
         }
@@ -59,9 +60,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    bat """
-                        docker build -t ${env.DOCKER_IMAGE}:${env.DOCKER_TAG} .
-                    """
+                    bat "docker build -t ${env.DOCKER_IMAGE}:${env.DOCKER_TAG} ."
                 }
             }
         }
@@ -70,7 +69,7 @@ pipeline {
         stage('Push Docker Image') {
             steps {
                 script {
-                    docker.withRegistry('https://index.docker.io/v1/', "${env.DOCKERHUB_CREDENTIALS}") {
+                    docker.withRegistry('https://index.docker.io/v1/', env.DOCKERHUB_CREDENTIALS) {
                         bat "docker push ${env.DOCKER_IMAGE}:${env.DOCKER_TAG}"
                     }
                 }
