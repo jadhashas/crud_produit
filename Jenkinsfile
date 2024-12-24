@@ -43,7 +43,6 @@ pipeline {
                 script {
                     bat 'mkdir C:\\Deploy'
                     bat 'copy target\\crud_produit-1.0-SNAPSHOT.jar C:\\Deploy\\'
-                    bat 'java -jar C:\\Deploy\\crud_produit-1.0-SNAPSHOT.jar'
                 }
             }
         }
