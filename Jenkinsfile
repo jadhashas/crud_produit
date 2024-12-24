@@ -12,21 +12,21 @@ pipeline {
         // Étape 2 : Construction du projet
         stage('Build') {
             steps {
-                bat './mvnw clean install' // Maven Wrapper
+                bat 'mvnw.cmd clean install' // Maven Wrapper
             }
         }
 
         // Étape 3 : Tests unitaires
         stage('Tests unitaires') {
             steps {
-                bat './mvnw test'
+                bat '.mvnw.cmd test'
             }
         }
 
         // Étape 4 : Package (générer un fichier exécutable .jar ou .war)
         stage('Package') {
             steps {
-                bat './mvnw package'
+                bat 'mvnw.cmd package'
             }
         }
     }
